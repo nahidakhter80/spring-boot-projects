@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<meta charset="utf-8"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="css/bootstrap.min.css" rel="stylesheet" />
+	<link href="css/app.css" rel="stylesheet" />
+  <title>Duty Management</title>
+  </head>
+  <body> 
+    <div class="container" ng-app="app" ng-controller="navController" data-ng-init="navigate('allocation')">  
+    	<div class='header'>
+    		<img class="logo" src="images/logo.png">Duty Management
+    	</div>
+    	<div class="btn-group nav-bar">
+		  <button type="button" class="btn btn-primary" ng-click="navigate('allocation')" ng-disabled='nav.isAllocation'>Apple</button>
+		  <button type="button" class="btn btn-primary" ng-click="navigate('exchange')" ng-disabled='nav.isExchange'>Exchange</button>
+		  <div class="btn-group">
+		    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+		    Sony <span class="caret"></span></button>
+		    <ul class="dropdown-menu" role="menu">
+		      <li><a href="#">Tablet</a></li>
+		      <li><a href="#">Smartphone</a></li>
+		    </ul>
+		  </div>
+		</div>
+		<div ng-view />
+    </div>
+  </body>
+   <script type="text/javascript" src="js/angular.min.js"></script>
+   <script type="text/javascript" src="js/angular-route.min.js"></script>
+   <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+   <script type="text/javascript" src="js/app.js"></script>
+   <script>
+
+</script>
+</html>
+

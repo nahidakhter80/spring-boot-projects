@@ -1,0 +1,79 @@
+.header {
+	font-size: 20px;
+	color: #337ab7;
+	margin-top: 20px;
+}
+.logo {
+	margin-right:15px;
+}
+.nav-bar {
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    width:100%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.nav-bar>.btn[disabled]{
+     color: #337ab7 !important;
+     background-color: #f1f1f1;
+     opacity: 1;
+     cursor: default;
+     border-color: #ddd;
+     border-radius: 0;
+}
+
+
+
+
+
+
+
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+	color: #337ab7 !important;
+    cursor: default;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+    border-top-color: transparent;
+}
+
+.nav-tabs>li>a {
+	color: #ffffff !important;
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 0 !important;
+}
+
+.nav-tabs > li > a:hover {
+  color: #337ab7 !important;
+}
+
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+    background-color: #eee;
+    color: #337ab7 !important;
+    border-color: transparent;
+}
+
+.dropdown-menu>li>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #337ab7 !important;
+    white-space: nowrap;
+}
+
+
+/* 
+workaround to resolve issue which is not removing "active" 
+class after selecting other dropdown item
+making multiple dropdown items active at a time.
+now there is no background color for active item
+*/
+.dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover {
+    background-color: #fff !important;
+}
