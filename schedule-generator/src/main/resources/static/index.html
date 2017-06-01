@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<meta charset="utf-8"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="css/bootstrap.min.css" rel="stylesheet" />
+	<link href="css/file-upload.css" rel="stylesheet" />
+  <title>Set Generator</title>
+  </head>
+  <body ng-app="myApp"> 
+    <div class="container" ng-controller = "myCtrl">
+    	<div class="row">
+			<div class="col-md-2"></div>
+		  	<div class="col-md-8">
+		  		<div class='top-cntnr'>
+		  			<h4>Welcome to Set Generator Utility!<span class="glyphicon glyphicon-home pull-right"></span></h4>
+		  		</div>
+		  		<div class=' cntnr'>
+		  			<form name="userForm">
+		  				<div class='wrong-file' ng-show='isInvalidFile'>
+		  					Please select a valid excel file
+		  				</div>
+		  				<div class="row">
+			  				<div class="col-md-4">
+					    		<input ng-model="fileName" type="text" class="form-control file-name" readonly required>
+					  		</div>
+						  	<div class="col-md-8">
+						  		<input type = "file" file-model="myFile" class="file-upload" />
+						    	<button class="btn btn-primary file-browse">Browse Performa<span class="glyphicon glyphicon-folder-open browse"></span></button>
+						  	</div>
+						</div>
+										
+						<div class="row">
+							<div class="col-md-12 radio">
+								<label><input type="radio" ng-model="isNumericSet" ng-value="true">Numeric Set Numbers</label>
+							  	<label><input type="radio" ng-model="isNumericSet" ng-value="false">Alphabatic Set Numbers</label>
+							  	<button class="btn btn-primary start" ng-click="uploadFile()" ng-disabled='userForm.$invalid'>
+							  	Start <span class="glyphicon glyphicon-ok-sign"></span></button>
+						  	</div>
+						</div>
+		  			</form>		  			
+					
+					<div class="loader" ng-show="showLoader"></div>
+					
+					<div class="alert alert-danger" ng-show='error && !showLoader'>
+					    <strong><span class="glyphicon glyphicon-alert"></span>&nbsp;Error!</strong> <br><br>
+					    <p>{{ error }}</p>
+				   </div>
+	   
+	   			   <div ng-cloak ng-show="stbList.length>0 && !error">
+						<table class="table table-striped table-header">
+							<caption>Please select ETY Remarks for the following trains</caption>
+						    <thead>
+						      <tr>
+						      	<th class="tbl-header col1">Train#</th>
+						        <th class="tbl-header col2">Origin</th>
+						        <th class="tbl-header col3">Destination</th>
+						        <th class="tbl-header col4">ETY Remark</th>
+						      </tr>
+						    </thead>
+						  </table>
+						  <div class='table-content'>
+						  	<table class="table table-striped">
+						    <tbody>			    
+						    	<tr ng-repeat="obj in stbList">
+								    <td class="col1">{{obj.trainNo }}</td>
+								    <td class="col2">{{obj.origin }}</td>
+								    <td class="col3">{{obj.destination }}</td>				  
+							        <td class="col4">
+							        	<span class="radio index-radio">
+								        	<label ng-if="obj.destination=='VR'"><input type="radio" ng-model="obj.prtremark" value='ETY TO SCR YD' />Empty to scrap yard</label>
+						  					<label ng-if="obj.destination=='VR'"><input type="radio" ng-model="obj.prtremark" value='ETY TO VRCS' />Empty to car shade</label>								        								        	
+						  					
+						  					<label ng-if="obj.destination=='BVI'"><input type="radio" ng-model="obj.prtremark" value='ETY TO KCS' />Empty to KILE car shade</label>						  					
+						  					<label ng-if="obj.destination=='BVI'"><input type="radio" ng-model="obj.prtremark" value='SHUNTING DUTY' />Shunting Duty</label>
+						  					<label ng-if="obj.destination=='BVI'"><input type="radio" ng-model="obj.prtremark" />Backed to yard</label>
+								        								        	
+						  					<label ng-if="obj.destination=='ADH'"><input type="radio" ng-model="obj.prtremark" value='SHUNTING DUTY' />Shunting Duty</label>
+						  					<label ng-if="obj.destination=='ADH'"><input type="radio" ng-model="obj.prtremark" />Backed to yard</label>
+						        		</span>			        
+									</td>
+							      </tr>
+								</tbody>
+					  		</table>
+						  </div>	
+				  		  <div class="row" ng-show='!isExcelGenerated'>
+				  			<div class="col-md-12 generate">
+								<button class="btn btn-primary" ng-click="updateEtyRemark()">Generate Excel
+									<span class="glyphicon glyphicon-file"></span>
+								</button>
+							</div>
+						 </div>
+						 
+						 <div class="loader" ng-show="excelLoader"></div>
+					
+					<div class="alert alert-success excel-generated" ng-show='isExcelGenerated'>
+						<strong><span class="glyphicon glyphicon-alert"></span>&nbsp;Success!</strong>  <br><br>
+					  	<p>Output excel generated successfully, click <a href="download">here</a> to download.<p>
+					</div>	   				
+		  		</div>
+		  	</div>
+		  	<div class="col-md-2"></div> 
+		 </div>
+    </div>
+  </body>
+   <script type="text/javascript" src="js/angular.min.js"></script>
+   <script type="text/javascript" src="js/app.js"></script>
+</html>
+
