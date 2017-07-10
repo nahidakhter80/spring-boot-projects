@@ -73,7 +73,7 @@
 }
 
 .excel-generated {
-	margin-top: 30px;
+	margin-top: 10px;
 }
 .wrong-file {
 	color: #a94442;
@@ -94,7 +94,7 @@
 
 .table-content {
 	max-height: 260px !important;
-    overflow: overlay;
+    overflow-y: scroll;
     margin-bottom: 20px;
 }
 .col1 {	
