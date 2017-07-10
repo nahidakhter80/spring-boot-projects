@@ -71,6 +71,7 @@ public class ScheduleService {
 		setList = getSetListWithTAPRemark(setList);
 		setList = getSetListWithETYRemark(setList);	
 		setList = getSetListWithROAfterProtection(setList);
+		setRestHours(setList);
 		//setNOSRemark();
 		
 		List<List<ScheduleSet>> clubbedSets = getClubbedSets(setList);
@@ -164,7 +165,11 @@ public class ScheduleService {
 			setList.add(set);
 		}
 		
-		getRestHours(setList);
+		/*shifted this method call to generateExcel() 
+		 * to be called after updating destinations 
+		 * and off duty time as per user inputs from UI
+		 */
+		//setRestHours(setList); 
 		
 		return setList;
 	}	
@@ -182,13 +187,31 @@ public class ScheduleService {
 			ScheduledTrain train = trainList.get(lastTrainIndex);
 			if(train.getPRTRemark() != null && train.getNextTrainNo().equalsIgnoreCase("STB")) {
 				if (train.getPRTRemark().equalsIgnoreCase(Constants.ETY_TO_KCS)) {
-					destination = "KCS";
+					destination = "KCS";					
 				} else if (train.getPRTRemark().equalsIgnoreCase(Constants.ETY_TO_VRCS)) { 
 					destination = "VRCS";
 				} else if (train.getPRTRemark().equalsIgnoreCase(Constants.ETY_TO_SCRAP_YARD)) { 
 					destination = "SCR YD";
 				}
 				set.setDestination(destination);
+				
+				//reset off duty time as per new destination and PRT remark
+				String lastTrainArrivalTime = TimeUtil.timeToString(train.getArrivalTime());
+				String offDutyTime = "";
+				if (train.getDestination().equalsIgnoreCase("ADH")) {
+					if (train.getPRTRemark().equalsIgnoreCase(Constants.SHUNTING_DUTY)) {
+						offDutyTime =  TimeUtil.roundTimeToIncrease((TimeUtil.addMinutes(lastTrainArrivalTime, 30)));
+					}
+						
+				} else if (train.getDestination().equalsIgnoreCase("BVI")) {
+					if (train.getPRTRemark().equalsIgnoreCase(Constants.SHUNTING_DUTY)) {
+						offDutyTime =  TimeUtil.roundTimeToIncrease((TimeUtil.addMinutes(lastTrainArrivalTime, 30)));
+					} else if (train.getPRTRemark().equalsIgnoreCase(Constants.ETY_TO_KCS)) {
+						offDutyTime =  TimeUtil.roundTimeToIncrease((TimeUtil.addMinutes(lastTrainArrivalTime, 40)));
+					} 
+				}
+				set.setOffDutyTime(offDutyTime);
+				
 			}			
 		}		
 	}
@@ -429,7 +452,7 @@ public class ScheduleService {
 		}
 	}
 	
-	private void getRestHours(List<ScheduleSet> sets) {
+	private void setRestHours(List<ScheduleSet> sets) {
 		String restHours = "00:00";
 		String offDutyTime = "00:00";
 		String onDutyTime = "00:00";
