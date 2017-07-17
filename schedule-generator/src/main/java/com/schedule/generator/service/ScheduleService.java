@@ -157,8 +157,12 @@ public class ScheduleService {
 			String offDutyTime = calculatetOffDutyTime(tList, destination);
 			set.setOffDutyTime(offDutyTime);
 			
-			String duration = TimeUtil.getDuration(TimeUtil.stringToTime(onDutyTime), TimeUtil.stringToTime(offDutyTime));
-			set.setDuration(duration);
+			/*shifted this code snippet to setDestintions() 
+			 * to be called after updating destinations 
+			 * and off duty time as per user inputs from UI
+			 */			
+			//String duration = TimeUtil.getDuration(TimeUtil.stringToTime(onDutyTime), TimeUtil.stringToTime(offDutyTime));
+			//set.setDuration(duration);
 			
 			set.setDistance(df.format(distance));	
 			
@@ -211,6 +215,9 @@ public class ScheduleService {
 					} 
 				}
 				set.setOffDutyTime(offDutyTime);
+				
+				String duration = TimeUtil.getDuration(TimeUtil.stringToTime(set.getOnDutyTime()), TimeUtil.stringToTime(offDutyTime));
+				set.setDuration(duration);
 				
 			}			
 		}		
