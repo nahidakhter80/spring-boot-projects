@@ -216,6 +216,7 @@ public class ScheduleService {
 				}
 				set.setOffDutyTime(offDutyTime);
 				
+				//set duration as per new off duty time
 				String duration = TimeUtil.getDuration(TimeUtil.stringToTime(set.getOnDutyTime()), TimeUtil.stringToTime(offDutyTime));
 				set.setDuration(duration);
 				
