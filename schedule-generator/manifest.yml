@@ -1,0 +1,9 @@
+applications:
+  - name: schedule-generator
+    buildpack: java_buildpack
+    path: target/schedule-generator.jar
+    memory: 512M
+    timeout : 180
+env:
+   SPRING_PROFILES_ACTIVE : cloud  
+   JAVA_DOCS_URL : https://predixdev.github.io/predix-microservice-cf-spring
