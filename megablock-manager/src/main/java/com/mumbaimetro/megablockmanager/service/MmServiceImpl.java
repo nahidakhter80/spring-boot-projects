@@ -215,9 +215,9 @@ public class MmServiceImpl implements MmService{
         	
         	int rowsInSet = cancelledTrains.size() > nonCancelledTrains.size() ? cancelledTrains.size() : nonCancelledTrains.size();
         	
-			for (int i = 0; i < rowsInSet; i++) {
-				
+			for (int i = 0; i < rowsInSet; i++) {				
 				Row row = sheet.createRow(rowNum++);
+				System.out.println("Writining row number: " + rowNum);
 				Cell setNumberCell = row.createCell(0);
 				Cell vacantCell = row.createCell(1);
 				Cell cancelledTrainsCell = row.createCell(2);
