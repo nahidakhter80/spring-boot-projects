@@ -10,12 +10,14 @@ import java.util.Set;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import com.schedule.generator.entity.ScheduledTrain;
+import com.schedule.generator.exception.ExcelException;
 import com.schedule.generator.exception.PerformaFormatException;
 
 public class ExcelReader {
@@ -31,7 +33,7 @@ public class ExcelReader {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public List<ScheduledTrain> getTrainList() throws IOException {
+	public List<ScheduledTrain> getTrainList() throws IOException, ExcelException {
 		List<ScheduledTrain> trainList = new ArrayList<ScheduledTrain>();
 		
 		Sheet sheet = wb.getSheet(Constants.PERFORMA_SHEET);
@@ -85,7 +87,12 @@ public class ExcelReader {
 	        		   } else  if (oridinDest.length == 2) {
 	        			   train.setOrigen(oridinDest[0]);
 	        			   train.setDestination(oridinDest[1]);
+	        		   } else {
+	        			   throw new ExcelException("Origin/Destination in excel is not correct, " +
+	        					   "please check train number \"" + train.getTrainNo() + 
+	        					   "\" and try again with correct data in excel.");
 	        		   }
+	        		   
 	        	   } else if(direction.equals("DOWN")) {
 	        		   if (oridinDest.length == 1) {
 	        			   train.setDestination(row.getCell(2).getStringCellValue());
@@ -94,6 +101,10 @@ public class ExcelReader {
 	        		   } else  if (oridinDest.length == 2) {
 	        			   train.setOrigen(oridinDest[0]);
 	        			   train.setDestination(oridinDest[1]);
+	        		   }  else {
+	        			   throw new ExcelException("Origin/Destination in excel is not correct, " +
+	        					   "please check train number \"" + train.getTrainNo() + 
+	        					   "\" and try again with correct data in excel.");
 	        		   }
 	        	   }
         		   
@@ -114,11 +125,16 @@ public class ExcelReader {
 	        	   } 
 	        	   
 	        	   if (row.getCell(4) != null && row.getCell(4).getCellType() != 3) {
-	        		   train.setDepartureTime(row.getCell(4).getDateCellValue());
+	        		   Cell cell = row.getCell(4);
+	        		   cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+	        		   train.setDepartureTime(cell.getDateCellValue());
 	        	   }
 	        	   
-	        	   if (row.getCell(5) != null && row.getCell(5).getCellType() != 3)
-	        		   train.setArrivalTime(row.getCell(5).getDateCellValue());
+	        	   if (row.getCell(5) != null && row.getCell(5).getCellType() != 3) {
+	        		   Cell cell = row.getCell(5);
+        		   	   cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+	        		   train.setArrivalTime(cell.getDateCellValue());
+	        	   }
 	        	   
 	        	   row.getCell(6).setCellType(1);
 	        	   if (!row.getCell(6).getStringCellValue().trim().equals("")) {

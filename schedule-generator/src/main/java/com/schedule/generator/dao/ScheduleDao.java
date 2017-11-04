@@ -5,11 +5,13 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import com.schedule.generator.entity.ScheduledTrain;
+import com.schedule.generator.exception.ExcelException;
 
 @Repository
 public class ScheduleDao {
@@ -20,11 +22,17 @@ public class ScheduleDao {
 		return entityManager.unwrap(Session.class);
 	}
 	
-	public void insertScheduledTrains(List<ScheduledTrain> list) {
+	public void insertScheduledTrains(List<ScheduledTrain> list) throws ExcelException {
 		getSession().createSQLQuery("truncate table SCHEDULED_TRAIN").executeUpdate();
 		
 		for (ScheduledTrain st : list) {
-			getSession().save(st);
+			try {
+				getSession().save(st);
+			} catch (NonUniqueObjectException e) {
+				System.out.println("Duplicate train found " + st.getTrainNo());
+				throw new ExcelException("Duplicate train found" + st.getTrainNo(), e);
+			}
+			
 		}
 	}
 	

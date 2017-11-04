@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.schedule.generator.entity.ScheduledTrain;
+import com.schedule.generator.exception.ExcelException;
 import com.schedule.generator.dao.ScheduleDao;
 import com.schedule.generator.dto.ScheduleSet;
 import com.schedule.generator.util.AlphanumericComparator;
@@ -37,7 +38,8 @@ public class ScheduleService {
 	private ScheduleDao dao;
 	
 	@Transactional	
-	public List<ScheduledTrain> processProfarma(InputStream is, Boolean isNumericSet) throws IOException, EncryptedDocumentException, InvalidFormatException {
+	public List<ScheduledTrain> processProfarma(InputStream is, Boolean isNumericSet) throws IOException, 
+		EncryptedDocumentException, InvalidFormatException, ExcelException {
 		this.isNumericSet = isNumericSet;
 		ExcelReader excelReader = new ExcelReader(is, isNumericSet);
 		System.out.println("\n\nReading selected excel file...");
@@ -45,7 +47,6 @@ public class ScheduleService {
 		excelReader.close();
 		
 		dao.insertScheduledTrains(trainList);
-		
 		List<ScheduledTrain> stbList = dao.getStbList();
 		
 		return stbList;
@@ -531,8 +532,9 @@ public class ScheduleService {
 			for (ScheduledTrain train : trainList) {
 				int mins = TimeUtil.getMinuteDiffetence(train.getArrivalTime(), t.getDepartureTime());
 				
-				if(train.getNextTrainNo().equalsIgnoreCase(trainNo) && !t.getOrigin().equalsIgnoreCase("CCG") &&
-						!train.getSetNo().toString().equalsIgnoreCase(setNo.toString()) && mins <=20) {
+				if(train.getNextTrainNo() != null && train.getNextTrainNo().equalsIgnoreCase(trainNo)
+						&& t.getOrigin() != null && !t.getOrigin().equalsIgnoreCase("CCG") 
+						&& !train.getSetNo().toString().equalsIgnoreCase(setNo.toString()) && mins <=20) {
 					return "RO SET NO. " + train.getSetNo();					
 				}
 			}
@@ -589,7 +591,7 @@ public class ScheduleService {
 	private String getROSetNo(String trainNo, List<ScheduleSet> setList) {
 		for (ScheduleSet set : setList) {
 			for (ScheduledTrain train : set.getTrainList()) {
-				if (train.getNextTrainNo().equalsIgnoreCase(trainNo)) {
+				if (train.getNextTrainNo() != null && train.getNextTrainNo().equalsIgnoreCase(trainNo)) {
 					return "R/O SET NO. " + train.getSetNo();
 				}
 			}

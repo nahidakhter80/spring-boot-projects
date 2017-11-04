@@ -29,7 +29,9 @@ app.service('fileUpload', ['$http', function ($http) {
 			   $scope.error = null;
 			   
 			   if (response.data.status) {
-				   $scope.stbList = response.data.data;	   
+				   console.log(response);
+				   $scope.stbList = response.data.data;	  
+				   $scope.status = response.data.status;	
 			   } else {
 				   $scope.error = response.data.data; 
 			   }	
@@ -51,6 +53,7 @@ app.controller('myCtrl', ['$scope', 'fileUpload', '$http', function($scope, file
 		 $scope.isInvalidFile = false;
 		 $scope.stbList={};
 		 $scope.error=null;
+		 $scope.status=null;
 		 var file = $scope.myFile;
 		 if (angular.isObject(file))
 			 $scope.fileName = file.name;
@@ -59,7 +62,7 @@ app.controller('myCtrl', ['$scope', 'fileUpload', '$http', function($scope, file
 	$scope.showLoader;
 	$scope.error;
 	$scope.isExcelGenerated;
-	$scope.stbList = {};
+	$scope.stbList = {};	
 	
 	$scope.isNumericSet = true;
 	$scope.uploadFile = function(){
@@ -94,7 +97,7 @@ app.controller('myCtrl', ['$scope', 'fileUpload', '$http', function($scope, file
 				$scope.isExcelGenerated=response.data.status;			   
 			} else {
 				if (response.data.data == null) {
-					$scope.error = 'Something wrong went on server. Please contact rechnical team.';
+					$scope.error = 'Something went wrong on server. Please contact administrator.';
 				} else {
 					$scope.error = response.data.data; 
 				}				
