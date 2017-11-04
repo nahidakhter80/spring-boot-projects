@@ -326,6 +326,7 @@ public class ScheduleService {
 		return setList;
 	}
 	
+	
 	/*private void setNOSRemark(){
 		for (ScheduleSet set : setList) {
 			List<ScheduledTrain> trainList = set.getTrainList();			
