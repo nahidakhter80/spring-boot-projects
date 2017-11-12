@@ -162,8 +162,8 @@ public class ScheduleService {
 			 * to be called after updating destinations 
 			 * and off duty time as per user inputs from UI
 			 */			
-			//String duration = TimeUtil.getDuration(TimeUtil.stringToTime(onDutyTime), TimeUtil.stringToTime(offDutyTime));
-			//set.setDuration(duration);
+			String duration = TimeUtil.getDuration(TimeUtil.stringToTime(onDutyTime), TimeUtil.stringToTime(offDutyTime));
+			set.setDuration(duration);
 			
 			set.setDistance(df.format(distance));	
 			
