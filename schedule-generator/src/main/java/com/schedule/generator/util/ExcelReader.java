@@ -107,7 +107,8 @@ public class ExcelReader {
 	        					   "\" and try again with correct data in excel.");
 	        		   }
 	        	   } else {
-        			   throw new ExcelException("Direction \"UP/DOWN\" not found in PROFARMA for train#" + train.getTrainNo() + " at row#" + (rowNumber+1));
+        			   throw new ExcelException("Direction \"UP/DOWN\" not found in PROFARMA for train#" + 
+        					   train.getTrainNo() + " at row#" + (rowNumber+1));
         		   }
         		   
         		   String oriDest = train.getOrigin() + "-" + train.getDestination();        		           	   
