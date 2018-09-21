@@ -80,7 +80,7 @@ public class ExcelReader {
         		   String destCode = row.getCell(2).getStringCellValue().trim();
         		   String [] oridinDest = destCode.split("\\s+");
         		  
-        		   if(direction.equals("UP")) {
+        		   if(direction.equalsIgnoreCase("UP")) {
 	        		   if (oridinDest.length == 1) {
 	        			   train.setOrigen(destCode);
 	        			   train.setDestination("CCG");
@@ -91,9 +91,9 @@ public class ExcelReader {
 	        			   throw new ExcelException("Origin/Destination in excel is not correct, " +
 	        					   "please check train number \"" + train.getTrainNo() + 
 	        					   "\" and try again with correct data in excel.");
-	        		   }
+	        		   } 
 	        		   
-	        	   } else if(direction.equals("DOWN")) {
+	        	   } else if(direction.equalsIgnoreCase("DOWN") || direction.equalsIgnoreCase("DN")) {
 	        		   if (oridinDest.length == 1) {
 	        			   train.setDestination(row.getCell(2).getStringCellValue());
 	        			   train.setDestination(destCode);
@@ -106,7 +106,9 @@ public class ExcelReader {
 	        					   "please check train number \"" + train.getTrainNo() + 
 	        					   "\" and try again with correct data in excel.");
 	        		   }
-	        	   }
+	        	   } else {
+        			   throw new ExcelException("Direction \"UP/DOWN\" not found in PROFARMA for train#" + train.getTrainNo() + " at row#" + (rowNumber+1));
+        		   }
         		   
         		   String oriDest = train.getOrigin() + "-" + train.getDestination();        		           	   
 	        	   float distance = 0;	        	   
